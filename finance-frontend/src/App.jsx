@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/button';
 import './App.css';
+import Home from './pages/Home'
 
 function App() {
   return (
     <>
-      <Button>Click me</Button>
+      <Home/>
     </>
   );
 }
