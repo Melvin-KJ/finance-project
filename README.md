@@ -25,3 +25,11 @@
 - ✅ Implemented container scroll animation from Aceternity UI for a 3D dashboard preview
 
 ### 📅 Feb 14, 2024
+
+- ✅ Installed react-router-dom and integrated routing functionality into the project.
+
+- ✅ Created Signup and Login pages, ensuring a user-friendly interface for authentication. Included proper form validation and styled input fields with icons from Lucide-react.
+
+- ✅ Utilized useNavigate for seamless page redirection after a user interacts with the 'Get Started' button on the homepage.
+
+- ✅ Set up routes for the Home, Signup, Login, and Dashboard pages with a clean routing structure in App.js.
