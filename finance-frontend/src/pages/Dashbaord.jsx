@@ -1,8 +1,12 @@
 import React from 'react'
+import StatCard from '@/components/dashboard/StatCard'
 
 const Dashbaord = () => {
   return (
-    <div>Dashbaord</div>
+    <div>
+      {/* Testing dashboard small components */}
+      <StatCard/>
+    </div>
   )
 }
 
