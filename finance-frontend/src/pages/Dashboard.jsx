@@ -3,6 +3,7 @@ import StatCard from '@/components/dashboard/StatCard';
 import ExpenseBarChart from '@/components/dashboard/Charts/ExpenseBarChart';
 import CategoryPieChart from '@/components/dashboard/Charts/CategoryPieChart';
 import Sidebar from '@/components/dashboard/Sidebar';
+import Header from '@/components/dashboard/Header';
 
 const Dashbaord = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -36,6 +37,8 @@ const Dashbaord = () => {
     <div className="flex h-screen bg-gray-100">
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="flex-1 flex flex-col">
+        {/* Header component */}
+        <Header activeTab={activeTab} />
         <div className="flex-1 p-6 overflow-auto">{renderedContent()}</div>
       </div>
     </div>

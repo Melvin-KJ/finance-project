@@ -11,7 +11,7 @@ const Sidebar = ({ activeTab, onTabChange }) => {
   return (
     <div className="bg-white w-64 shadow-lg">
       <div className="p-4">
-        <h2 className="text-xl font-bold text-gray-800">Money Sentry</h2>
+        <h2 className="text-xl font-bold text-primary">Money Sentry</h2>
       </div>
       <nav className="mt-4">
         {navItems.map(({ id, icon: Icon, label }) => (
