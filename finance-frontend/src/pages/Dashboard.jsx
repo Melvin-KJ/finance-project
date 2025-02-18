@@ -3,7 +3,7 @@ import StatCard from '@/components/dashboard/StatCard';
 import ExpenseBarChart from '@/components/dashboard/Charts/ExpenseBarChart';
 import CategoryPieChart from '@/components/dashboard/Charts/CategoryPieChart';
 import Sidebar from '@/components/dashboard/Sidebar';
-import Header from '@/components/dashboard/Header';
+import Navbar from '@/components/dashboard/Navbar';
 import ExpenseList from '@/components/expenses/ExpenseList';
 import BudgetCard from '@/components/budget/BudgetCard';
 import { Plus } from 'lucide-react';
@@ -61,7 +61,7 @@ const Dashbaord = () => {
       amount: 300,
       spent: 150,
       items: 4,
-    }
+    },
   ];
 
   const renderedContent = () => {
@@ -92,20 +92,18 @@ const Dashbaord = () => {
         );
       case 'budget':
         return (
-        <div className='space-y-6'>
-          <button className='flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-800'>
-            <Plus className='w-4 h-4 mr-2'/>
-            Create Budget
-          </button>
-          <div className='grid grid-cols-2 gap-6'> 
-          {
-            budgets.map((budget, index)=>(
-              <BudgetCard key={index} budget={budget} />
-            ))
-          }
+          <div className="space-y-6">
+            <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-800">
+              <Plus className="w-4 h-4 mr-2" />
+              Create Budget
+            </button>
+            <div className="grid grid-cols-2 gap-6">
+              {budgets.map((budget, index) => (
+                <BudgetCard key={index} budget={budget} />
+              ))}
+            </div>
           </div>
-        </div>
-      );
+        );
       default:
         return null;
     }
@@ -116,7 +114,7 @@ const Dashbaord = () => {
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="flex-1 flex flex-col">
         {/* Header component */}
-        <Header activeTab={activeTab} />
+        <Navbar activeTab={activeTab} />
         <div className="flex-1 p-6 overflow-auto">{renderedContent()}</div>
       </div>
     </div>

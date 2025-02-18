@@ -8,7 +8,7 @@ import {
 } from '../ui/dropdown-menu';
 import { Link } from 'react-router-dom';
 
-const Header = ({ activeTab }) => {
+const Navbar = ({ activeTab }) => {
   return (
     <div className="h-16 bg-white shadow-sm flex items-center justify-between px-4">
       <h1 className="text-xl font-semibold text-gray-800">
@@ -30,7 +30,7 @@ const Header = ({ activeTab }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
-              <Link to={'/signup'} className='flex items-center'>
+              <Link to={'/'} className="flex items-center">
                 <LogOut className="w-4 h-4 mr-2" />
                 Logout
               </Link>
@@ -42,4 +42,4 @@ const Header = ({ activeTab }) => {
   );
 };
 
-export default Header;
+export default Navbar;
