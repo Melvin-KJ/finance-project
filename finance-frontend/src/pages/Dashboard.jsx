@@ -5,6 +5,8 @@ import CategoryPieChart from '@/components/dashboard/Charts/CategoryPieChart';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Header from '@/components/dashboard/Header';
 import ExpenseList from '@/components/expenses/ExpenseList';
+import BudgetCard from '@/components/budget/BudgetCard';
+import { Plus } from 'lucide-react';
 
 const Dashbaord = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -45,6 +47,23 @@ const Dashbaord = () => {
     },
   ];
 
+  const budgets = [
+    {
+      emoji: '🍕',
+      name: 'Food & Dinning',
+      amount: 500,
+      spent: 320,
+      items: 8,
+    },
+    {
+      emoji: '🚗',
+      name: 'Transportation',
+      amount: 300,
+      spent: 150,
+      items: 4,
+    }
+  ];
+
   const renderedContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -72,7 +91,21 @@ const Dashbaord = () => {
           </div>
         );
       case 'budget':
-        return <div>Budget Content</div>;
+        return (
+        <div className='space-y-6'>
+          <button className='flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-800'>
+            <Plus className='w-4 h-4 mr-2'/>
+            Create Budget
+          </button>
+          <div className='grid grid-cols-2 gap-6'> 
+          {
+            budgets.map((budget, index)=>(
+              <BudgetCard key={index} budget={budget} />
+            ))
+          }
+          </div>
+        </div>
+      );
       default:
         return null;
     }
