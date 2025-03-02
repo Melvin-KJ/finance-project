@@ -1,20 +1,34 @@
 import React, { useState } from 'react';
 import { User, Lock } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
     email: '',
     password: '',
   });
 
-  //initialize navigate
-  // const navigate  = useNavigate()
-
-  const loginUser = (e) => {
+  const loginUser = async (e) => {
     e.preventDefault();
-    axios.get('/');
+
+    const { email, password } = data;
+    try {
+      const data = await axios.post('/login', { email, password });
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        setData({ email: '', password: '' });
+        toast.success('User logged in successfully');
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response?.data?.error || 'Something went wrong');
+    }
   };
 
   return (
@@ -56,7 +70,6 @@ const Login = () => {
           {/* Submit button */}
           <div className="mb-6 flex justify-center">
             <button
-              // onClick={() => navigate('/dashboard')}
               type="submit"
               className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600"
             >
@@ -64,12 +77,10 @@ const Login = () => {
             </button>
           </div>
 
-          {/* Redirect to Signup */}
+          {/* Sign up link */}
           <p className="text-center text-sm">
             Don't have an account?{' '}
-            <Link to={'/signup'} className="text-green-700 hover:underline">
-              Sign Up
-            </Link>
+            <button className="text-green-700 hover:underline">Sign Up</button>
           </p>
         </form>
       </div>
