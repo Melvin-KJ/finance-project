@@ -1,11 +1,20 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { User, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
+  const [data,setData] = useState({
+    email:'',
+    password:''
+  })
+
  //initialize navigate
     const navigate  = useNavigate() 
+
+    const loginUser = (e) =>{
+      e.preventDefault()
+    }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -14,16 +23,17 @@ const Login = () => {
           Login to Your Account
         </h2>
 
-        <form>
-          {/* Username input */}
+        <form onSubmit={loginUser}>
+          {/* Email input */}
           <div className="mb-4 flex items-center border border-gray-300 rounded-md">
             <User className="text-green-700 mx-3" />
             <input
-              type="text"
-              name="username"
-              id="username"
+              type="email"
+              name="email"
+              value={data.email}
+              onChange={(e) => setData({ ...data, email: e.target.value })}
               className="w-full p-3 outline-none"
-              placeholder="Enter your username"
+              placeholder="Enter your email"
               required
             />
           </div>
@@ -34,7 +44,8 @@ const Login = () => {
             <input
               type="password"
               name="password"
-              id="password"
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
               className="w-full p-3 outline-none"
               placeholder="Enter your password"
               required
@@ -44,7 +55,7 @@ const Login = () => {
           {/* Submit button */}
           <div className="mb-6 flex justify-center">
             <button
-            onClick={()=>navigate('/dashboard')}
+              onClick={() => navigate('/dashboard')}
               type="submit"
               className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600"
             >

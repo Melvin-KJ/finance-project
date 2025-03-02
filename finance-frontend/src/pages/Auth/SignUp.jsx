@@ -1,10 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { User, Mail, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+    const [data, setData] = useState({
+      name:'',
+      email:'',
+      password:''
+    })
+
     //initialize navigate
     const navigate  = useNavigate() 
+
+    const registerUser = (e)=>{
+      e.preventDefault();
+      
+    }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -12,14 +23,15 @@ const SignUp = () => {
         <h2 className="text-3xl font-bold text-center mb-4">
           Create an Account
         </h2>
-        <form>
+        <form onSubmit={registerUser}>
           {/* Username input */}
           <div className="mb-4 flex items-center border border-gray-300 rounded-md">
             <User className="text-green-700 mx-3" />
             <input
               type="text"
+              value={data.name}
+              onChange={(e) => setData({ ...data, name: e.target.value })}
               name="username"
-              id="username"
               className="w-full p-3 outline-none"
               placeholder="Enter your username"
               required
@@ -32,7 +44,8 @@ const SignUp = () => {
             <input
               type="email"
               name="email"
-              id="email"
+              value={data.email}
+              onChange={(e) => setData({ ...data, email: e.target.value })}
               className="w-full p-3 outline-none"
               placeholder="Enter your email"
               required
@@ -45,7 +58,8 @@ const SignUp = () => {
             <input
               type="password"
               name="password"
-              id="password"
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
               className="w-full p-3 outline-none"
               placeholder="Enter your password"
               required
@@ -55,7 +69,7 @@ const SignUp = () => {
           {/* Submit button */}
           <div className="mb-6 flex justify-center">
             <button
-            onClick={()=>navigate('/login')}
+              onClick={() => navigate('/login')}
               type="submit"
               className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600"
             >
