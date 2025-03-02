@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { User, Lock } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { userContext } from '@/context/userContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { fetchUser } = useContext(userContext); // Get fetchUser function from context
 
   const [data, setData] = useState({
     email: '',
@@ -23,7 +25,9 @@ const Login = () => {
       } else {
         setData({ email: '', password: '' });
         toast.success('User logged in successfully');
-        navigate('/dashboard');
+        // Fetch the latest user data
+        await fetchUser();
+        navigate('/dashboard'); //Redirect to dashboard
       }
     } catch (err) {
       console.log(err);
