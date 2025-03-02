@@ -1,21 +1,37 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { User, Mail, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const SignUp = () => {
-    const [data, setData] = useState({
-      name:'',
-      email:'',
-      password:''
-    })
+  const [data, setData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
 
-    //initialize navigate
-    const navigate  = useNavigate() 
+  //initialize navigate
+  const navigate = useNavigate();
 
-    const registerUser = (e)=>{
-      e.preventDefault();
-      
+  const registerUser = async (e) => {
+    e.preventDefault();
+
+    const { name, email, password } = data;
+    try {
+      const response = await axios.post('/register', { name, email, password });
+      if (response.data.error) {
+        toast.error(response.data.error);
+      } else {
+        setData({ name: '', email: '', password: '' }); //reset state
+        toast.success('User registered successfully');
+        navigate('/login');
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Something went wrong');
+      console.log(err);
     }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -69,7 +85,6 @@ const SignUp = () => {
           {/* Submit button */}
           <div className="mb-6 flex justify-center">
             <button
-              onClick={() => navigate('/login')}
               type="submit"
               className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600"
             >
