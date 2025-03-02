@@ -7,11 +7,14 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/', require('./routes/authRoutes'));
+// Routes
+app.use('/api'.require('./routes/expenseRoutes'));
+app.use('/api/auth', require('./routes/authRoutes'));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI).then(() => {
@@ -21,6 +24,6 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 });
 
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('Server is running on port 3000');
 });
