@@ -1,20 +1,21 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { User, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+  });
 
-  const [data,setData] = useState({
-    email:'',
-    password:''
-  })
+  //initialize navigate
+  // const navigate  = useNavigate()
 
- //initialize navigate
-    const navigate  = useNavigate() 
-
-    const loginUser = (e) =>{
-      e.preventDefault()
-    }
+  const loginUser = (e) => {
+    e.preventDefault();
+    axios.get('/');
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -55,7 +56,7 @@ const Login = () => {
           {/* Submit button */}
           <div className="mb-6 flex justify-center">
             <button
-              onClick={() => navigate('/dashboard')}
+              // onClick={() => navigate('/dashboard')}
               type="submit"
               className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600"
             >
