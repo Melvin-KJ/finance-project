@@ -7,14 +7,20 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+//apply cors globally 
+app.use(
+  cors({
+    origin: 'http://localhost:5173',//to allow frontend to access backend
+    credentials: true,//allow cookies and authorization headers
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
-app.use('/api'.require('./routes/expenseRoutes'));
-app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api',require('./routes/expenseRoutes'));
+app.use('/api', require('./routes/authRoutes'));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI).then(() => {

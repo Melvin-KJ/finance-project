@@ -1,6 +1,13 @@
 const express = require('express');
+const cors = require('cors');
 const router = express.Router();
 const Expense = require('../models/Expense');
+
+// Middleware
+router.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}))
 
 // Add an expense
 router.post('/expenses', async (req, res) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StatCard from '@/components/dashboard/StatCard';
 import ExpenseBarChart from '@/components/dashboard/Charts/ExpenseBarChart';
 import CategoryPieChart from '@/components/dashboard/Charts/CategoryPieChart';
@@ -7,9 +7,30 @@ import Navbar from '@/components/dashboard/Navbar';
 import ExpenseList from '@/components/expenses/ExpenseList';
 import BudgetCard from '@/components/budget/BudgetCard';
 import { Plus } from 'lucide-react';
+import ExpenseForm from '@/components/expenses/ExpenseForm';
+import axios from 'axios';
 
 const Dashbaord = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [expenses, setExpenses] = useState([]);
+  const [showExpenseForm, setShowExpenseForm] = useState(false);
+
+  const handleAddExpense = () => {
+    setShowExpenseForm(true);
+  };
+
+  const handleExpenseAdded = (newExpense) => {
+    setExpenses([...expenses, newExpense]); //Updated expenses list
+    setShowExpenseForm(false); //Close the modal
+  };
+
+  //fetch expenses from backend
+  useEffect(() => {
+    axios
+      .get('http://localhost:3000/api/expenses')
+      .then((response) => setExpenses(response.data))
+      .catch((error) => console.error('Error fetching expenses', error));
+  }, []);
 
   // data objects like {expenseData, categoryData, budgets, expenses}
 
@@ -28,23 +49,6 @@ const Dashbaord = () => {
     { name: 'Transport', value: 35 },
     { name: 'Rent', value: 30 },
     { name: 'Bills', value: 20 },
-  ];
-
-  const expenses = [
-    {
-      id: 1,
-      name: 'Grocery Shopping',
-      amount: 120.5,
-      date: '2025-02-15',
-      category: 'Food',
-    },
-    {
-      id: 2,
-      name: 'Gas',
-      amount: 45.0,
-      date: '2025-02-14',
-      category: 'Transport',
-    },
   ];
 
   const budgets = [
@@ -82,12 +86,13 @@ const Dashbaord = () => {
       case 'expenses':
         return (
           <div className="space-y-6">
-            <ExpenseList
-              expenses={expenses}
-              onAddExpense={() => {
-                /* Handle add expense */
-              }}
-            />
+            <ExpenseList expenses={expenses} setExpenses={setExpenses} onAddExpense={handleAddExpense} />
+            {showExpenseForm && (
+              <ExpenseForm
+                onClose={() => setShowExpenseForm(false)}
+                onExpenseAdded={handleExpenseAdded}
+              />
+            )}
           </div>
         );
       case 'budget':

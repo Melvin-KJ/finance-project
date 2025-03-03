@@ -34,6 +34,9 @@ const registerUser = async (req, res) => {
     return res.status(201).json(user);
   } catch (err) {
     console.log(err);
+    return res
+      .status(500)
+      .json({ error: 'Something went wrong. Please try again' });
   }
 };
 
@@ -57,29 +60,40 @@ const loginUser = async (req, res) => {
         {},
         (err, token) => {
           if (err) throw err;
-          res.cookie('token', token).json(user);
+          res
+            .cookie('token', token, {
+              httpOnly: true, //Prevents XSS attacks
+              sameSite: 'strict', // Prevents CSRF attacks
+            })
+            .json(user);
+          return;
         }
       );
-    }
-    if (!isMatch) {
+    } else {
       return res.status(400).json({ error: 'Passwords do not match' });
     }
   } catch (err) {
     console.log(err);
+    return res
+      .status(500)
+      .json({ error: 'Something went wrong. Please try again' });
   }
 };
 
 //Profile endpoint
 const getProfile = async (req, res) => {
   const { token } = req.cookies;
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
-      if (err) throw err;
-      res.json(user);
-    });
-  } else {
-    res.status(401).json({ error: 'Not authorized' });
+
+  if (!token) {
+    return res.status(400).json({ error: 'Not authorized' });
   }
+
+  jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
+    if (err) {
+      return res.status(400).json({ error: 'Invalid token' });
+    }
+    res.json(user);
+  });
 };
 
 module.exports = {

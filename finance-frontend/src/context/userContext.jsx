@@ -12,7 +12,7 @@ export function UserContextProvider({ children }) {
       const { data } = await axios.get('/profile', { withCredentials: true });
       setUser(data);
     } catch (error) {
-      console.log('Error fetching user', error);
+      console.log('Error fetching user', error.response?.status, error.response?.data || error.message);//debugging purposes
       setUser(null);
     }
   };
