@@ -73,9 +73,10 @@ const Dashbaord = () => {
       case 'dashboard':
         return (
           <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-3 gap-6">
+              <StatCard title="Total Balance" amount={4000} type="balance" />
               <StatCard title="Total Income" amount={12000} type="income" />
-              <StatCard title="Total Expenses" amount={8000} type="income" />
+              <StatCard title="Total Expenses" amount={8000} type="expense" />
             </div>
             <div className="grid grid-cols-2 gap-6">
               <ExpenseBarChart data={expenseData.monthly} />
@@ -86,7 +87,11 @@ const Dashbaord = () => {
       case 'expenses':
         return (
           <div className="space-y-6">
-            <ExpenseList expenses={expenses} setExpenses={setExpenses} onAddExpense={handleAddExpense} />
+            <ExpenseList
+              expenses={expenses}
+              setExpenses={setExpenses}
+              onAddExpense={handleAddExpense}
+            />
             {showExpenseForm && (
               <ExpenseForm
                 onClose={() => setShowExpenseForm(false)}
