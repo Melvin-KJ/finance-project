@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import StatCard from '@/components/dashboard/StatCard';
-import ExpenseBarChart from '@/components/dashboard/Charts/ExpenseBarChart';
-import CategoryPieChart from '@/components/dashboard/Charts/CategoryPieChart';
+import TotalBalance from '@/components/dashboard/TotalBalance';
+import Goals from '@/components/dashboard/Goals';
+import UpcomingBills from '@/components/dashboard/UpcomingBills';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Navbar from '@/components/dashboard/Navbar';
 import ExpenseList from '@/components/expenses/ExpenseList';
 import BudgetCard from '@/components/budget/BudgetCard';
-import { Plus } from 'lucide-react';
+import { Goal, Plus } from 'lucide-react';
 import ExpenseForm from '@/components/expenses/ExpenseForm';
 import axios from 'axios';
 
@@ -32,41 +32,7 @@ const Dashbaord = () => {
       .catch((error) => console.error('Error fetching expenses', error));
   }, []);
 
-  // data objects like {expenseData, categoryData, budgets, expenses}
 
-  //sample data to vsualize in dashboard
-  const expenseData = {
-    monthly: [
-      { date: 'Jan', amount: 2400 },
-      { date: 'Feb', amount: 2800 },
-      { date: 'March', amount: 2200 },
-      { date: 'April', amount: 2600 },
-    ],
-  };
-
-  const categoryData = [
-    { name: 'Food', value: 25 },
-    { name: 'Transport', value: 35 },
-    { name: 'Rent', value: 30 },
-    { name: 'Bills', value: 20 },
-  ];
-
-  const budgets = [
-    {
-      emoji: '🍕',
-      name: 'Food & Dinning',
-      amount: 500,
-      spent: 320,
-      items: 8,
-    },
-    {
-      emoji: '🚗',
-      name: 'Transportation',
-      amount: 300,
-      spent: 150,
-      items: 4,
-    },
-  ];
 
   const renderedContent = () => {
     switch (activeTab) {
@@ -74,14 +40,14 @@ const Dashbaord = () => {
         return (
           <div className="space-y-6">
             <div className="grid grid-cols-3 gap-6">
-              <StatCard />
-              <StatCard />
-              <StatCard />
+              {/* Total Balance */}
+              <TotalBalance />
+              {/* Goals */}
+              <Goals />
+              {/* Upcoming Bills */}
+              <UpcomingBills />
             </div>
-            <div className="grid grid-cols-2 gap-6">
-              <ExpenseBarChart data={expenseData.monthly} />
-              <CategoryPieChart data={categoryData} />
-            </div>
+            {/* Recent Transactions Table View */}
           </div>
         );
       case 'expenses':
@@ -120,7 +86,7 @@ const Dashbaord = () => {
   };
 
   return (
-    <div className="flex h-screen bg-lightgray1">
+    <div className="flex h-screen bg-gray3">
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="flex-1 flex flex-col">
         {/* Header component */}

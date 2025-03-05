@@ -11,7 +11,7 @@ const Navbar = () => {
   }, []); // Fetch the latest user data when the Navbar component is mounted
 
   return (
-    <div className="h-16 bg-lightgray2 shadow-sm flex items-center justify-between px-4">
+    <div className="h-16 bg-gray3 shadow-sm flex items-center justify-between px-4">
       <h1 className="text-2xl font-bold text-gray-800">
         Hello, {user?.name || 'Guest'} 👋
       </h1>

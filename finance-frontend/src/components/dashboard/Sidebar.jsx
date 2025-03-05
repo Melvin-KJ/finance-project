@@ -41,8 +41,8 @@ const Sidebar = ({ activeTab, onTabChange }) => {
             onClick={() => onTabChange(id)}
             className={`rounded-sm shadow-md flex items-center w-full px-4 py-2  mt-4  ${
               activeTab === id
-                ? 'bg-secondarycolor text-white'
-                : 'bg-defaultblack text-lightgray1 '
+                ? 'bg-primarycolor text-white'
+                : 'bg-defaultblack text-gray2 '
             }
             `}
           >
@@ -56,7 +56,7 @@ const Sidebar = ({ activeTab, onTabChange }) => {
       <div className="px-4">
         <Link
           to="/"
-          className="flex items-center w-full px-4 py-2 mb-2 text-lightgray1 bg-defaultblack"
+          className="flex items-center w-full px-4 py-2 mb-2 text-gray2 bg-defaultblack"
         >
           <LogOut className="w-5 h-5 mr-2" />
           Logout
@@ -69,7 +69,7 @@ const Sidebar = ({ activeTab, onTabChange }) => {
         <img
           src="/avatar.svg"
           alt="Profile"
-          className="w-10 h-10 rounded-full bg-gray-500"
+          className="w-10 h-10 rounded-full bg-gray-600"
         />
         <div className="ml-3 flex-1">
           <p className="text-white text-md font-medium">
