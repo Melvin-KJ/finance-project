@@ -74,9 +74,9 @@ const Dashbaord = () => {
         return (
           <div className="space-y-6">
             <div className="grid grid-cols-3 gap-6">
-              <StatCard title="Total Balance" amount={4000} type="balance" />
-              <StatCard title="Total Income" amount={12000} type="income" />
-              <StatCard title="Total Expenses" amount={8000} type="expense" />
+              <StatCard />
+              <StatCard />
+              <StatCard />
             </div>
             <div className="grid grid-cols-2 gap-6">
               <ExpenseBarChart data={expenseData.monthly} />
@@ -120,11 +120,11 @@ const Dashbaord = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-lightgray1">
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="flex-1 flex flex-col">
         {/* Header component */}
-        <Navbar activeTab={activeTab} />
+        <Navbar />
         <div className="flex-1 p-6 overflow-auto">{renderedContent()}</div>
       </div>
     </div>

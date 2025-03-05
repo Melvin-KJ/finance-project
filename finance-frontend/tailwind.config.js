@@ -1,3 +1,5 @@
+import { color } from 'framer-motion';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ['class'],
@@ -10,13 +12,18 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
-        primary: '#32e726', // Royal Blue
-        secondary: '#1E3A8A', // Navy Blue
-        success: '#10B981', // Emerald Green
-        warning: '#F59E0B', // Amber
-        danger: '#DC2626', // Red
-        neutral: '#374151', // Dark Gray
-        light: '#F3F4F6', // Light Gray
+        primary: '#32e726',
+        secondarycolor:'#299D91',
+        defaultblack:'#191919',
+        teritarycolor:'#525256',
+        gray1:'#666666',
+        gray2:'#9F9F9F',
+        lightgray1: '#E8E8E8',
+        lightgray2:'#F3F3F3',
+        specialorange:'#E73D1C',
+        specialgreen:'#4DAF6E',
+        specialgray:'#D2D2D2',
+        
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
