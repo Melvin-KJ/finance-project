@@ -24,11 +24,11 @@ const TotalBalance = () => {
 
   return (
     <div>
-      <h1 className="text-gray1 text-xl mb-2">Total Balance</h1>
+      <h1 className="text-black text-xl mb-2">Total Balance</h1>
       <div className="bg-white p-6 rounded-lg shadow">
         <div className="flex items-center justify-between border-b border-gray-300 mb-4 pb-2">
           <h2 className="text-xl font-extrabold">₹30000</h2>
-          <p className="text-secondarycolor ">All Accounts</p>
+          <p className="text-defaultblack">All Accounts</p>
         </div>
 
         {/* Custom Swiper Slider */}
