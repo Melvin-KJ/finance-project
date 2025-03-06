@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TotalBalance from '@/components/dashboard/TotalBalance';
 import Goals from '@/components/dashboard/Goals';
 import UpcomingBills from '@/components/dashboard/UpcomingBills';
+import RecentTransactions from '@/components/dashboard/RecentTransactions';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Navbar from '@/components/dashboard/Navbar';
 import ExpenseList from '@/components/expenses/ExpenseList';
@@ -48,6 +49,7 @@ const Dashbaord = () => {
               <UpcomingBills />
             </div>
             {/* Recent Transactions Table View */}
+            <RecentTransactions/>
           </div>
         );
       case 'expenses':

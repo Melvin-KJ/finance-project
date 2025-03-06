@@ -4,11 +4,11 @@ import { ChevronRight } from 'lucide-react';
 const UpcomingBills = () => {
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-black text-xl mb-2">Upcoming Bill</h1>
+      <div className="flex items-center justify-between  bg-gradient-to-r from-emerald-500 to-indigo-300 rounded-lg p-2 mb-2">
+        <h1 className="text-white text-lg font-semibold">Upcoming Bill</h1>
         <div className="flex items-center">
-          <button className="text-md">View All</button>
-          <ChevronRight className="w-5 h-5" />
+          <button className="text-md text-white font-medium">View All</button>
+          <ChevronRight className="w-5 h-5 text-white" />
         </div>
       </div>
       {/* Content */}

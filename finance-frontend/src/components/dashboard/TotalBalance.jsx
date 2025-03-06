@@ -24,7 +24,9 @@ const TotalBalance = () => {
 
   return (
     <div>
-      <h1 className="text-black text-xl mb-2">Total Balance</h1>
+      <h1 className="text-white text-lg font-semibold bg-gradient-to-r from-emerald-500 to-indigo-300 rounded-lg p-2 mb-2">
+        Total Balance
+      </h1>
       <div className="bg-white p-6 rounded-lg shadow">
         <div className="flex items-center justify-between border-b border-gray-300 mb-4 pb-2">
           <h2 className="text-xl font-extrabold">₹30000</h2>
@@ -72,9 +74,9 @@ const TotalBalance = () => {
             <p className="text-sm">Previous</p>
           </div>
 
-          <Ellipsis  className="w-8 h-8" />
+          <Ellipsis className="w-8 h-8" />
           <div className="flex flex-row cursor-pointer next-btn">
-            <p className='text-sm'>Next</p>
+            <p className="text-sm">Next</p>
             <ChevronRight className="w-5 h-5" />
           </div>
         </div>
