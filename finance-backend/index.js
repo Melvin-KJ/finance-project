@@ -19,7 +19,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
-app.use('/api/accounts', require("./routes/accountRoutes"));//Account Routes
+app.use('/api/accounts', require('./routes/accountRoutes')); //Account Routes
+app.use('/api', require('./routes/transactionRoutes'));//transaction Routes
 app.use('/api', require('./routes/expenseRoutes'));
 app.use('/api', require('./routes/authRoutes'));
 
