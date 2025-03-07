@@ -3,10 +3,11 @@ import TotalBalance from '@/components/dashboard/TotalBalance';
 import Goals from '@/components/dashboard/Goals';
 import UpcomingBills from '@/components/dashboard/UpcomingBills';
 import RecentTransactions from '@/components/dashboard/RecentTransactions';
+import Accounts from '@/components/balances/Accounts';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Navbar from '@/components/dashboard/Navbar';
 import ExpenseList from '@/components/expenses/ExpenseList';
-import BudgetCard from '@/components/budget/BudgetCard';
+// import BudgetCard from '@/components/budget/BudgetCard';
 import { Goal, Plus } from 'lucide-react';
 import ExpenseForm from '@/components/expenses/ExpenseForm';
 import axios from 'axios';
@@ -33,8 +34,6 @@ const Dashbaord = () => {
       .catch((error) => console.error('Error fetching expenses', error));
   }, []);
 
-
-
   const renderedContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -49,7 +48,13 @@ const Dashbaord = () => {
               <UpcomingBills />
             </div>
             {/* Recent Transactions Table View */}
-            <RecentTransactions/>
+            <RecentTransactions />
+          </div>
+        );
+      case 'balances':
+        return (
+          <div className="space-y-6">
+            <Accounts />
           </div>
         );
       case 'expenses':
@@ -75,11 +80,11 @@ const Dashbaord = () => {
               <Plus className="w-4 h-4 mr-2" />
               Create Budget
             </button>
-            <div className="grid grid-cols-2 gap-6">
+            {/* <div className="grid grid-cols-2 gap-6">
               {budgets.map((budget, index) => (
                 <BudgetCard key={index} budget={budget} />
               ))}
-            </div>
+            </div> */}
           </div>
         );
       default:

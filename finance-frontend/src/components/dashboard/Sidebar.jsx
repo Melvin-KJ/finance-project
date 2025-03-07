@@ -7,6 +7,7 @@ import {
   Settings,
   LogOut,
   MoreVertical,
+  Wallet,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
@@ -21,6 +22,7 @@ const Sidebar = ({ activeTab, onTabChange }) => {
 
   const navItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Overview' },
+    { id: 'balances', icon: Wallet, label: 'Balances' },
     { id: 'expenses', icon: CreditCard, label: 'Expenses' },
     { id: 'budget', icon: PiggyBank, label: 'Budget' },
     { id: 'transaction', icon: ReceiptText, label: 'Transactions' },
