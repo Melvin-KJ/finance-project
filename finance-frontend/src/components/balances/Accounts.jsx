@@ -120,10 +120,6 @@ const Accounts = () => {
                 <button>Edit</button>
                 <SquarePen className="w-5 h-5 ms-2" />
               </div>
-              <div className="flex items-center text-white bg-primarycolor px-3 py-2 rounded-md cursor-pointer">
-                <button>Details</button>
-                <ChevronRight />
-              </div>
             </div>
           </div>
         ))}
