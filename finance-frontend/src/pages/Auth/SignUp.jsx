@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '@/components/Inputs/Input';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import { validateEmail } from '@/utils/helper';
 import ProfilePhotoSelector from '@/components/Inputs/ProfilePhotoSelector';
+import axiosInstance from '@/utils/axiosInstance';
+import { API_PATHS } from '@/utils/apiPaths';
+import { UserContext } from '@/context/userContext';
+import uploadImage from '@/utils/uploadImage';
 
 const SignUp = () => {
   //initialize navigate
@@ -15,6 +19,8 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
 
   const [error, setError] = useState(null);
+
+  const {updateUser} = useContext(UserContext);
 
   //Handle Signup Form Submit
   const handleSignup = async (e) => {
@@ -40,12 +46,40 @@ const SignUp = () => {
     setError("");
 
     //Signup API Call
-    
+    try{
+
+      //Upload image
+      if(profilePic){
+        const imgUploadRes= await uploadImage(profilePic);
+        profileImageUrl = imgUploadRes.imageUrl || "";
+      }
+
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER,{
+        fullName,
+        email,
+        password,
+        profileImageUrl
+      });
+
+      const { token, user } = response.data;
+
+      if(token){
+        localStorage.setItem("token",token);
+        updateUser(user);
+        navigate("/dashboard");
+      }
+    }catch(error){
+      if(error.response && error.response.data.message){
+        setError(error.response.data.message);
+      }else{
+        setError("Something went wrong. Please try again.");
+      }
+    }
   };
 
   return (
     <AuthLayout>
-      <div className="lg-w-[100%] h-auto md:h-full mt-10 md:mt-0 flex flex-col justify-center">
+      <div className="lg:w-[100%] h-auto md:h-full mt-10 md:mt-0 flex flex-col justify-center">
         <h3 className="text-xl font-semibold text-black">Create an Account</h3>
         <p className="text-xs text-slate-700 mt-[5px] mb-6">
           Please enter the details below
