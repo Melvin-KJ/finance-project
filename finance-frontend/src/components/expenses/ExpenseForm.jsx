@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const ExpenseForm = ({ onClose, onExpenseAdded, expenseToEdit }) => {
+const ExpenseForm = ({ onClose, onExpenseAdded, expenseToEdit, accounts }) => {
   const [formData, setFormData] = useState({
     name: '',
     amount: '',
     date: '',
     category: '',
+    accountId: '',
   });
 
   //Function to format ISO date to YYYY-MM-DD
@@ -25,12 +26,15 @@ const ExpenseForm = ({ onClose, onExpenseAdded, expenseToEdit }) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: name === 'amount' ? parseFloat(value) || '' : value, //Convert amount to number
+      [name]: name === 'amount' && value !== '' ? parseFloat(value) : value, //Convert amount to number
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log('Form data before submission:', formData); //Debugging
+
     //Validate the form data
     if (
       !formData.name ||
@@ -43,25 +47,46 @@ const ExpenseForm = ({ onClose, onExpenseAdded, expenseToEdit }) => {
     }
 
     try {
+      let expenseResponse;
       if (expenseToEdit) {
-        //Update the expense
-        const response = await axios.put(
+        // Update existing expense
+        expenseResponse = await axios.put(
           `http://localhost:3000/api/expenses/${expenseToEdit._id}`,
-          formData
+          formData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
         );
-        onExpenseAdded(response.data, true); //Pass true to indicate an update
       } else {
-        //Add  a new expense
-        const response = await axios.post(
+        // Add new expense
+        expenseResponse = await axios.post(
           'http://localhost:3000/api/expenses',
           formData
         );
-        onExpenseAdded(response.data, false); //Pass false to indicate a new expense
       }
+
+      // Add the transaction separately with type "Expenses"
+      if (!expenseToEdit) {
+        await axios.post('http://localhost:3000/api/transactions', {
+          name: formData.name,
+          amount: formData.amount,
+          date: formData.date,
+          category: formData.category,
+          type: 'Debit', // Ensuring it gets categorized correctly
+          accountId: formData.accountId, //Add this to associate transactioon with the account
+        });
+      }
+
+      onExpenseAdded(expenseResponse.data, !!expenseToEdit);
       onClose();
     } catch (error) {
-      alert('Failed to save expense. Please try again.'); //Show error to the user
-      console.error('Error saving expense', error);
+      alert('Failed to save expense. Please try again.');
+      console.error(
+        'Error saving expense',
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -102,6 +127,21 @@ const ExpenseForm = ({ onClose, onExpenseAdded, expenseToEdit }) => {
             onChange={handleChange}
             className="border border-gray-300 p-3 rounded w-full"
           />
+
+          {/* Account selection dropdown */}
+          <select
+            name="accountId"
+            onChange={handleChange}
+            value={formData.accountId || ''}
+            className="border border-gray-300 p-3 rounded w-full"
+          >
+            <option value="">Select Account</option>
+            {accounts.map((account) => (
+              <option key={account._id} value={account._id}>
+                {account.accountType} - {account.accountNumber}
+              </option>
+            ))}
+          </select>
           <div className="flex justify-end space-x-2 pt-4">
             <button
               type="button"

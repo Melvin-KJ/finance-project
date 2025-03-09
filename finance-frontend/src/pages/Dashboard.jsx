@@ -80,6 +80,7 @@ const Dashbaord = () => {
               <ExpenseForm
                 onClose={() => setShowExpenseForm(false)}
                 onExpenseAdded={handleExpenseAdded}
+                accounts={accounts}//Pass accounts as prop
               />
             )}
           </div>

@@ -17,7 +17,7 @@ const RecentTransactions = () => {
       }
     };
     fetchTransactions();
-  }, []);
+  }, [transactions]);
 
   //filter transactions based on selected tab
   const filteredTransactions = transactions.filter((transaction) =>
@@ -86,7 +86,11 @@ const RecentTransactions = () => {
                       ₹{Math.abs(transaction.amount)}
                     </td>
                     <td className="p-3">
-                      {transaction.type === 'Credit' ? 'Revenue' : 'Expenses'}
+                      {transaction.type === 'Credit'
+                        ? 'Revenue'
+                        : transaction.type === 'Debit'
+                        ? 'Expenses'
+                        : transaction.type}
                     </td>
 
                     <td className="p-3">
@@ -96,7 +100,7 @@ const RecentTransactions = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="text-center p-4 text-gray-500">
+                  <td colSpan="5" className="text-center p-4 text-gray-500">
                     No transactions found
                   </td>
                 </tr>

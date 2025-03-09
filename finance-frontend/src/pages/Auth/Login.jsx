@@ -1,94 +1,78 @@
-import React, { useContext, useState } from 'react';
-import { User, Lock } from 'lucide-react';
-import axios from 'axios';
-import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import { userContext } from '@/context/userContext';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Input from '@/components/Inputs/Input';
+import AuthLayout from '@/components/layouts/AuthLayout';
+import { validateEmail } from '@/utils/helper'; 
+
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
-  const { fetchUser } = useContext(userContext); // Get fetchUser function from context
 
-  const [data, setData] = useState({
-    email: '',
-    password: '',
-  });
-
-  const loginUser = async (e) => {
+  // Handle Login Form Submit
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    const { email, password } = data;
-    try {
-      const data = await axios.post('/login', { email, password });
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        setData({ email: '', password: '' });
-        toast.success('User logged in successfully');
-        // Fetch the latest user data
-        await fetchUser();
-        navigate('/dashboard'); //Redirect to dashboard
-      }
-    } catch (err) {
-      console.log(err);
-      toast.error(err.response?.data?.error || 'Something went wrong');
+    if(!validateEmail(email)) {
+      setError("Please enter a valid email address");
+      return;
     }
+
+    if(!password){
+      setError("Please enter your password");
+      return;
+    }
+
+    setError("");
+
+    //Login API Call
+
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold text-center mb-4">
-          Login to Your Account
-        </h2>
+    //Redesigning Login Page
+    <AuthLayout>
+      <div className="lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center">
+        <h3 className="text-xl font-semibold text-black">Welcome back</h3>
+        <p className="text-xs text-slate-700 mt-[5px] mb-6">
+          Please enter your details to log in
+        </p>
 
-        <form onSubmit={loginUser}>
-          {/* Email input */}
-          <div className="mb-4 flex items-center border border-gray-300 rounded-md">
-            <User className="text-green-700 mx-3" />
-            <input
-              type="email"
-              name="email"
-              value={data.email}
-              onChange={(e) => setData({ ...data, email: e.target.value })}
-              className="w-full p-3 outline-none"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
+        <form onSubmit={handleLogin}>
+          <Input
+            value={email}
+            onChange={({ target }) => setEmail(target.value)}
+            label="Email Address"
+            placeholder="joe@example.com"
+            type="text"
+          />
 
-          {/* Password input */}
-          <div className="mb-4 flex items-center border border-gray-300 rounded-md">
-            <Lock className="text-green-700 mx-3" />
-            <input
-              type="password"
-              name="password"
-              value={data.password}
-              onChange={(e) => setData({ ...data, password: e.target.value })}
-              className="w-full p-3 outline-none"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
+          <Input
+            value={password}
+            onChange={({ target }) => setPassword(target.value)}
+            label="Password"
+            placeholder="Password"
+            type="password"
+          />
 
-          {/* Submit button */}
-          <div className="mb-6 flex justify-center">
-            <button
-              type="submit"
-              className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600"
-            >
-              Log In
-            </button>
-          </div>
+          {error && <p className="text-red-500 text-xs pb-3">{error}</p>}
 
-          {/* Sign up link */}
-          <p className="text-center text-sm">
-            Don't have an account?{' '}
-            <button className="text-green-700 hover:underline">Sign Up</button>
+          <button type="submit" className="btn-primary">
+            LOGIN
+          </button>
+
+          <p className="text-[13px] text-slate-800 mt-3">
+            Don't have an account?
+            <Link to="/signup" className="font-medium text-blue-500 underline">
+              SignUp
+            </Link>
           </p>
         </form>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 

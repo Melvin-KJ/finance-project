@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../_components/Header'
 import Hero from '../_components/Hero'
 
-const Home = () => {
+const Base = () => {
   return (
     <div>
       <Header />
@@ -11,4 +11,4 @@ const Home = () => {
   );
 }
 
-export default Home
+export default Base;

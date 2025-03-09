@@ -27,6 +27,11 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     required: true,
   }, //Add category field
+  type: {
+    type: String,
+    enum: ['Credit', 'Debit'],
+    required: true,
+  },
 });
 
 const Transaction = mongoose.model('Transaction', transactionSchema);

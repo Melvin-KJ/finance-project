@@ -5,6 +5,8 @@ const Transaction = require('../models/Transaction');
 // Create a new transaction
 router.post('/transactions', async (req, res) => {
   try {
+    console.log('Received data', req.body); //debugging
+
     const { accountId, name, amount, date, type, category } = req.body;
 
     //validation

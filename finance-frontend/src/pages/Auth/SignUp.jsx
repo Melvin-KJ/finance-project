@@ -1,99 +1,102 @@
 import React, { useState } from 'react';
-import { User, Mail, Lock } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
+import Input from '@/components/Inputs/Input';
+import AuthLayout from '@/components/layouts/AuthLayout';
+import { validateEmail } from '@/utils/helper';
+import ProfilePhotoSelector from '@/components/Inputs/ProfilePhotoSelector';
 
 const SignUp = () => {
-  const [data, setData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-
   //initialize navigate
   const navigate = useNavigate();
 
-  const registerUser = async (e) => {
+  const [profilePic, setProfilePic] = useState(null);
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [error, setError] = useState(null);
+
+  //Handle Signup Form Submit
+  const handleSignup = async (e) => {
     e.preventDefault();
 
-    const { name, email, password } = data;
-    try {
-      const response = await axios.post('/register', { name, email, password });
-      if (response.data.error) {
-        toast.error(response.data.error);
-      } else {
-        setData({ name: '', email: '', password: '' }); //reset state
-        toast.success('User registered successfully');
-        navigate('/login');
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.error || 'Something went wrong');
-      console.log(err);
+    let profileImageUrl = "";
+
+    if(!fullName){
+      setError("Please enter your full name");
+      return;
     }
+
+    if(!validateEmail(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if(!password){
+      setError("Please enter your password");
+      return;
+    }
+
+    setError("");
+
+    //Signup API Call
+    
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold text-center mb-4">
-          Create an Account
-        </h2>
-        <form onSubmit={registerUser}>
-          {/* Username input */}
-          <div className="mb-4 flex items-center border border-gray-300 rounded-md">
-            <User className="text-green-700 mx-3" />
-            <input
+    <AuthLayout>
+      <div className="lg-w-[100%] h-auto md:h-full mt-10 md:mt-0 flex flex-col justify-center">
+        <h3 className="text-xl font-semibold text-black">Create an Account</h3>
+        <p className="text-xs text-slate-700 mt-[5px] mb-6">
+          Please enter the details below
+        </p>
+
+        <form onSubmit={handleSignup}>
+          <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              value={fullName}
+              onChange={({ target }) => setFullName(target.value)}
+              label="Full Name"
+              placeholder="John Doe"
               type="text"
-              value={data.name}
-              onChange={(e) => setData({ ...data, name: e.target.value })}
-              name="username"
-              className="w-full p-3 outline-none"
-              placeholder="Enter your username"
-              required
             />
+
+            <Input
+              value={email}
+              onChange={({ target }) => setEmail(target.value)}
+              label="Email Address"
+              placeholder="joe@example.com"
+              type="text"
+            />
+
+            <div className="col-span-2">
+              <Input
+                value={password}
+                onChange={({ target }) => setPassword(target.value)}
+                label="Password"
+                placeholder="Password"
+                type="password"
+              />
+            </div>
           </div>
 
-          {/* Email input */}
-          <div className="mb-4 flex items-center border border-gray-300 rounded-md">
-            <Mail className="text-green-700 mx-3" />
-            <input
-              type="email"
-              name="email"
-              value={data.email}
-              onChange={(e) => setData({ ...data, email: e.target.value })}
-              className="w-full p-3 outline-none"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
+          {error && <p className="text-red-500 text-xs pb-3">{error}</p>}
 
-          {/* Password input */}
-          <div className="mb-4 flex items-center border border-gray-300 rounded-md">
-            <Lock className="text-green-700 mx-3" />
-            <input
-              type="password"
-              name="password"
-              value={data.password}
-              onChange={(e) => setData({ ...data, password: e.target.value })}
-              className="w-full p-3 outline-none"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
+          <button type="submit" className="btn-primary">
+            SIGN UP
+          </button>
 
-          {/* Submit button */}
-          <div className="mb-6 flex justify-center">
-            <button
-              type="submit"
-              className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-600"
-            >
-              Sign Up
-            </button>
-          </div>
+          <p className="text-[13px] text-slate-800 mt-3">
+            Don't have an account?
+            <Link to="/login" className="font-medium text-blue-500 underline">
+              Login
+            </Link>
+          </p>
         </form>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 

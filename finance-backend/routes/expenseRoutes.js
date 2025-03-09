@@ -4,15 +4,23 @@ const router = express.Router();
 const Expense = require('../models/Expense');
 
 // Middleware
-router.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
-}))
+router.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+);
 
 // Add an expense
 router.post('/expenses', async (req, res) => {
   try {
     const { name, amount, date, category } = req.body;
+
+    //validation
+    if (!name || !amount || !date || !category) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
     const expense = new Expense({
       name,
       amount,

@@ -1,9 +1,10 @@
 import './App.css';
 import Login from './pages/Auth/Login';
 import SignUp from './pages/Auth/SignUp';
-import Dashboard from './pages/Dashboard';
-import Home from './pages/Home';
-import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Dashboard/Home';
+import Income from './pages/Dashboard/Income';
+import Expense from './pages/Dashboard/Expense';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 import { UserContextProvider } from './context/userContext';
@@ -16,13 +17,27 @@ function App() {
     <UserContextProvider>
       <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Root />} />
+        <Route path="/login" exact element={<Login />} />
+        <Route path="/signup" exact element={<SignUp />} />
+        <Route path="/dashboard" exact element={<Home />} />
+        <Route path="/income" exact element={<Income />} />
+        <Route path="/expense" exact element={<Expense />} />
       </Routes>
     </UserContextProvider>
   );
 }
 
 export default App;
+
+const Root = () => {
+  //check if token exists in local storage
+  const isAuthenticated = localStorage.getItem('token');
+
+  //Redirect to dashboard if authenticated, otherwise redirect to login
+  return isAuthenticated ? (
+    <Navigate to="/dashboard" />
+  ) : (
+    <Navigate to="/login" />
+  );
+};
