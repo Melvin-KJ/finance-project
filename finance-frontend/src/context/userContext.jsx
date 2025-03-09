@@ -1,29 +1,25 @@
-import axios from 'axios';
-import { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 
-export const userContext = createContext({});
+export const UserContext = createContext();
 
-export function UserContextProvider({ children }) {
+const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  //function to fetch the latest user data
-  const fetchUser = async () => {
-    try {
-      const { data } = await axios.get('/profile', { withCredentials: true });
-      setUser(data);
-    } catch (error) {
-      console.log('Error fetching user', error.response?.status, error.response?.data || error.message);//debugging purposes
-      setUser(null);
-    }
+  //function to update user
+  const updateUser = (userData) => {
+    setUser(userData);
   };
 
-  useEffect(() => {
-    fetchUser();
-  }, []); // Runs only once when the component is mounted
+  //function to clear user data(logout)
+  const clearUser = () => {
+    setUser(null);
+  };
 
   return (
-    <userContext.Provider value={{ user, setUser, fetchUser }}>
+    <UserContext.Provider value={{ user, updateUser, clearUser }}>
       {children}
-    </userContext.Provider>
+    </UserContext.Provider>
   );
-}
+};
+
+export default UserProvider;
