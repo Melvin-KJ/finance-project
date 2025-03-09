@@ -16,6 +16,7 @@ const Dashbaord = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [expenses, setExpenses] = useState([]);
   const [showExpenseForm, setShowExpenseForm] = useState(false);
+  const [accounts, setAccounts] = useState([]); //state to store accounts data
 
   const handleAddExpense = () => {
     setShowExpenseForm(true);
@@ -26,12 +27,21 @@ const Dashbaord = () => {
     setShowExpenseForm(false); //Close the modal
   };
 
-  //fetch expenses from backend
+  //fetch both expenses and accounts from backend
   useEffect(() => {
-    axios
-      .get('http://localhost:3000/api/expenses')
-      .then((response) => setExpenses(response.data))
-      .catch((error) => console.error('Error fetching expenses', error));
+    const fetchData = async () => {
+      try {
+        const [expensesRes, accountsRes] = await Promise.all([
+          axios.get('http://localhost:3000/api/expenses'),
+          axios.get('http://localhost:3000/api/accounts'),
+        ]);
+        setExpenses(expensesRes.data);
+        setAccounts(accountsRes.data);
+      } catch (error) {
+        console.error('Error fetching data', error);
+      }
+    };
+    fetchData();
   }, []);
 
   const renderedContent = () => {
@@ -41,7 +51,8 @@ const Dashbaord = () => {
           <div className="space-y-6">
             <div className="grid grid-cols-3 gap-6">
               {/* Total Balance */}
-              <TotalBalance />
+              {/* Pass the accounts data to the TotalBalance component */}
+              <TotalBalance accounts={accounts} />
               {/* Goals */}
               <Goals />
               {/* Upcoming Bills */}

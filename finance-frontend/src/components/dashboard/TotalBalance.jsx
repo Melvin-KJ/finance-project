@@ -5,22 +5,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 
-const TotalBalance = () => {
-  //dummy accounts data to check the working of swiper
-  const accounts = [
-    {
-      type: 'Credit Card',
-      number: '**** **** **** 2789',
-      balance: '25000',
-      provider: 'Visa',
-    },
-    {
-      type: 'Debit Card',
-      number: '**** **** **** 5678',
-      balance: '15000',
-      provider: 'Mastercard',
-    },
-  ];
+const TotalBalance = ({ accounts }) => {
+  //calcalute total balance
+  const totalBalance = accounts.reduce(
+    (sum, account) => sum + Number(account.accountAmount),
+    0
+  );
 
   return (
     <div>
@@ -29,7 +19,7 @@ const TotalBalance = () => {
       </h1>
       <div className="bg-white p-6 rounded-lg shadow">
         <div className="flex items-center justify-between border-b border-gray-300 mb-4 pb-2">
-          <h2 className="text-xl font-extrabold">₹30000</h2>
+          <h2 className="text-xl font-extrabold">₹{totalBalance}</h2>
           <p className="text-defaultblack">All Accounts</p>
         </div>
 
@@ -48,18 +38,12 @@ const TotalBalance = () => {
               <div className=" flex items-center justify-between p-4 bg-primarycolor text-white opacity-70 rounded-sm shadow">
                 <div>
                   <p className="text-sm text-gray2">Account Type</p>
-                  <p className="font-extrabold">{account?.type}</p>
-                  <p className="text-sm text-gray2">{account?.number}</p>
+                  <p className="font-extrabold">{account?.accountType}</p>
+                  <p className="text-sm text-gray2">{account?.accountNumber}</p>
                 </div>
                 <div>
-                  <p>
-                    {account?.provider == 'Visa' ? (
-                      <img src="/Visacard.svg" />
-                    ) : (
-                      <img src="/Mastercard.svg" />
-                    )}{' '}
-                  </p>
-                  <p className="font-extrabold">₹{account?.balance}</p>
+                  <p>{account?.accountProvider}</p>
+                  <p className="font-extrabold">₹{account?.accountAmount}</p>
                 </div>
               </div>
             </SwiperSlide>
