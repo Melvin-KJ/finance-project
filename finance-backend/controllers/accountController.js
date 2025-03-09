@@ -3,10 +3,12 @@ const Account = require('../models/Account');
 //Create Account for add account button
 exports.createAccount = async (req, res) => {
   try {
+    console.log('Received account data', req.body); //debugging
     const account = new Account(req.body);
     await account.save();
     res.status(200).json(account);
   } catch (error) {
+    console.error('Create account error', error);
     res.status(500).json({ error: error.message });
   }
 };

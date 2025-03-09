@@ -5,11 +5,11 @@ const Transaction = require('../models/Transaction');
 // Create a new transaction
 router.post('/transactions', async (req, res) => {
   try {
-    const { accountId, name, amount, date, type } = req.body;
+    const { accountId, name, amount, date, type, category } = req.body;
 
     //validation
-    if (!accountId || !name || !amount || !date || !type) {
-      res.status(400).json({ error: 'Please fill all fields' });
+    if (!accountId || !name || !amount || !date || !type || !category) {
+      return res.status(400).json({ error: 'Please fill all fields' });
     }
 
     const transaction = new Transaction({
@@ -18,6 +18,7 @@ router.post('/transactions', async (req, res) => {
       amount,
       date,
       type,
+      category,
     });
 
     await transaction.save();
@@ -61,7 +62,7 @@ router.get('/transactions/:accountId', async (req, res) => {
 
     res.status(200).json(transactions);
   } catch (error) {
-    ress.status(500).json({ error: 'Failed to fetch transactions' });
+    res.status(500).json({ error: 'Failed to fetch transactions' });
   }
 });
 

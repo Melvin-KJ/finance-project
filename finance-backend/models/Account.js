@@ -4,20 +4,24 @@ const AccountSchema = new mongoose.Schema({
   accountType: {
     type: String,
     required: true,
+    enum: ['Savings', 'Checking', 'Credit Card', 'Loan'],
   }, //Savings, Checking, Credit, Loan etc.
   accountNumber: {
     type: String,
     required: true,
-    unique:true,
+    unique: true,
+    match: /^[0-9]{10,16}$/,
   },
   accountAmount: {
     type: Number,
     required: true,
+    default: 0,
   },
   accountProvider: {
     type: String,
     required: true,
-  },//HDFC, ICICI,SBI,Axis etc..
+    enum: ['HDFC', 'ICICI', 'SBI', 'Axis', 'CSB'],
+  }, //HDFC, ICICI,SBI,Axis etc..
   bankName: {
     type: String,
     required: true,
