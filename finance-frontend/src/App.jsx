@@ -4,18 +4,16 @@ import SignUp from './pages/Auth/SignUp';
 import Home from './pages/Dashboard/Home';
 import Income from './pages/Dashboard/Income';
 import Expense from './pages/Dashboard/Expense';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import axios from 'axios';
-import { Toaster } from 'react-hot-toast';
-import { UserContextProvider } from './context/userContext';
-
-axios.defaults.baseURL = 'http://localhost:3000/api';
-axios.defaults.withCredentials = true;
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 
 function App() {
   return (
-    <UserContextProvider>
-      <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
+    <Router>
       <Routes>
         <Route path="/" element={<Root />} />
         <Route path="/login" exact element={<Login />} />
@@ -24,7 +22,7 @@ function App() {
         <Route path="/income" exact element={<Income />} />
         <Route path="/expense" exact element={<Expense />} />
       </Routes>
-    </UserContextProvider>
+    </Router>
   );
 }
 

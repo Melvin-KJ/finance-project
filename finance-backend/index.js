@@ -29,6 +29,10 @@ connetDB();
 
 app.use("/api/v1/auth", authRoutes);
 
+// Server uploads folder
+app.use("/uploads",express.static(path.join(__dirname, "uploads")));
+
+
 app.listen(process.env.PORT || 3000, () => {
   console.log('Server is running on port 3000');
 });

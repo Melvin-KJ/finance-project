@@ -1,104 +1,88 @@
-const User = require('../models/User');
-const { hashPassword, comparePassword } = require('../helpers/auth');
+const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
-const test = (req, res) => {
-  res.json('test is working');
+// generate JWT token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
-//Register endpoint
-const registerUser = async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    //check if user exists
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: 'Please enter all fields' });
-    }
-    //check if password is long enough
-    if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ error: 'Password must be at least 6 characters' });
-    }
-    //check if email is valid
-    //check if email is already in use
-    const exist = await User.findOne({ email });
-    if (exist) {
-      return res.status(400).json({ error: 'Email is taken already' });
-    }
-    //hash password
-    const hashedPassword = await hashPassword(password);
+//Register User
+exports.registerUser = async (req, res) => {
+  const { fullName, email, password, profileImageUrl } = req.body;
 
-    //create user in database
-    const user = await User.create({ name, email, password: hashedPassword });
-    return res.status(201).json(user);
+  //Validation
+  if (!fullName || !email || !password) {
+    return res.status(400).json({ message: 'Please fill all fields' });
+  }
+
+  try {
+    //check if email exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email already in use' });
+    }
+
+    //Create user
+    const user = await User.create({
+      fullName,
+      email,
+      password,
+      profileImageUrl,
+    });
+
+    res.status(201).json({
+      id: user._id,
+      user,
+      token: generateToken(user._id),
+    });
   } catch (err) {
-    console.log(err);
-    return res
-      .status(500)
-      .json({ error: 'Something went wrong. Please try again' });
+    res.status(500).json({
+      message: 'Registering User Error',
+      error: err.message,
+    });
   }
 };
 
-//Login endpoint
-const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    //check if user exists
+//Login User
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
+//validation
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Please fill all fields' });
+  }
+  try{
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+    if(!user || !(await user.comparePassword(password))){
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
-
-    //compare password
-    const isMatch = await comparePassword(password, user.password);
-    if (isMatch) {
-      jwt.sign(
-        { email: user.email, id: user._id, name: user.name },
-        process.env.JWT_SECRET,
-        {},
-        (err, token) => {
-          if (err) throw err;
-          res
-            .cookie('token', token, {
-              httpOnly: true, //Prevents XSS attacks
-              sameSite: 'strict', // Prevents CSRF attacks
-            })
-            .json(user);
-          return;
-        }
-      );
-    } else {
-      return res.status(400).json({ error: 'Passwords do not match' });
-    }
-  } catch (err) {
-    console.log(err);
-    return res
-      .status(500)
-      .json({ error: 'Something went wrong. Please try again' });
+    res.status(200).json({
+      id: user._id,
+      user,
+      token: generateToken(user._id),
+    });
+    
+  }catch(err){
+    res.status(500).json({
+      message: 'Registering User Error',
+      error: err.message,
+    });
   }
 };
 
-//Profile endpoint
-const getProfile = async (req, res) => {
-  const { token } = req.cookies;
+//Get User Info
+exports.getUserInfo = async (req, res) => {
+  try{
+    const user = await User.findById(req.user.id).select("-password");
 
-  if (!token) {
-    return res.status(400).json({ error: 'Not authorized' });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
-    if (err) {
-      return res.status(400).json({ error: 'Invalid token' });
+    if(!user){
+      return res.status(400).json({ message: 'User not found' });
     }
-    res.json(user);
-  });
-};
 
-module.exports = {
-  test,
-  registerUser,
-  loginUser,
-  getProfile,
+    res.status(200).json(user);
+  }catch(err){
+    res.status(500).json({
+      message: 'Registering User Error',
+      error: err.message,
+    });
+  }
 };
