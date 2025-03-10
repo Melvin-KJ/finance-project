@@ -24,13 +24,13 @@ const SideMenu = ({ activeMenu }) => {
   };
 
   return (
-    <div className="w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 p-5 sticky top-[61px] z-20">
-      <div className="flex flex-col items-center justify-center gap-3 mt-3 mb-7">
+    <div className="w-64 h-[calc(100vh-61px)] bg-gradient-to-br from-black to-gray-800 border-r border-gray-700 p-5 text-white sticky top-[61px] shadow-xl z-20">
+      <div className="flex flex-col items-center justify-center gap-4 mt-3 mb-7">
         {user.profileImageUrl ? (
           <img
             src={user.profileImageUrl}
             alt="Profile"
-            className="w-20 h-20 bg-slate-300 rounded-full "
+            className="w-20 h-20bg-gray-300 rounded-full border-4 border-gray-600 "
           />
         ) : (
           <CharAvatar
@@ -41,16 +41,16 @@ const SideMenu = ({ activeMenu }) => {
           />
         )}
 
-        <h5 className="text-black font-medium leading-6">
-          {user.fullName || 'Guest'}
-        </h5>
+        <h5 className="text-lg font-medium">{user.fullName || 'Guest'}</h5>
       </div>
 
       {SIDE_MENU_DATA.map((item, index) => (
         <button
           key={`menu_${index}`}
-          className={`w-full flex items-center gap-4 text-[15px] ${
-            activeMenu === item.label ? 'text-white bg-primarycolor' : ''
+          className={`w-full flex items-center gap-4 text-[15px] font-medium py-3 px-6 rounded-lg mb-3 transition duration-200  ${
+            activeMenu === item.label
+              ? 'bg-yellow-500 text-gray-900 shadow-md'
+              : 'text-gray-300 hover:bg-gray-700 hover:text-white'
           } py-3 px-6 rounded-lg mb-3`}
           onClick={() => handleClick(item.path)}
         >
