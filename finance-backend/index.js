@@ -11,7 +11,6 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 const app = express();
 
 // Middleware
-//apply cors globally
 app.use(
   cors({
     origin: process.env.CLIENT_URL || '*', //to allow frontend to access backend
@@ -20,14 +19,7 @@ app.use(
   })
 );
 app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-
-// Routes
-// app.use('/api/accounts', require('./routes/accountRoutes')); //Account Routes
-// app.use('/api', require('./routes/transactionRoutes')); //transaction Routes
-// app.use('/api', require('./routes/expenseRoutes'));
-// app.use('/api', require('./routes/authRoutes'));
-
+//Connect to MongodB
 connectDB();
 
 app.use("/api/v1/auth", authRoutes);

@@ -1,9 +1,14 @@
 import './App.css';
+// Auth
 import Login from './pages/Auth/Login';
 import SignUp from './pages/Auth/SignUp';
+// Dashboard
 import Home from './pages/Dashboard/Home';
 import Income from './pages/Dashboard/Income';
 import Expense from './pages/Dashboard/Expense';
+// Main
+import HomePage from './pages/Main/HomePage';
+// react-router-dom
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,22 +24,31 @@ function App() {
       <div>
         <Router>
           <Routes>
-            <Route path="/" element={<Root />} />
-            <Route path="/login" exact element={<Login />} />
-            <Route path="/signup" exact element={<SignUp />} />
-            <Route path="/dashboard" exact element={<Home />} />
-            <Route path="/income" exact element={<Income />} />
-            <Route path="/expense" exact element={<Expense />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route
+              path="/dashboard"
+              element={<ProtectedRoute element={<Home />} />}
+            />
+            <Route
+              path="/income"
+              element={<ProtectedRoute element={<Income />} />}
+            />
+            <Route
+              path="/expense"
+              element={<ProtectedRoute element={<Expense />} />}
+            />
           </Routes>
         </Router>
       </div>
       <Toaster
-      toastOptions={{
-        className:"",
-        style:{
-          fontSize:'13px'
-        },
-      }}
+        toastOptions={{
+          className: '',
+          style: {
+            fontSize: '13px',
+          },
+        }}
       />
     </UserProvider>
   );
@@ -42,14 +56,10 @@ function App() {
 
 export default App;
 
-const Root = () => {
+const ProtectedRoute = ({ element }) => {
   //check if token exists in local storage
   const isAuthenticated = localStorage.getItem('token');
 
-  //Redirect to dashboard if authenticated, otherwise redirect to login
-  return isAuthenticated ? (
-    <Navigate to="/dashboard" />
-  ) : (
-    <Navigate to="/login" />
-  );
+  //Redirect to element if authenticated, otherwise redirect to login
+  return isAuthenticated ? element : <Navigate to="/login" />;
 };
