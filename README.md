@@ -1,8 +1,5 @@
----
 
 # 💰 **Moneysentry – Personal Finance Management Application**  
-
-
 
 > A full-stack personal finance management application to track and manage income and expenses efficiently.  
 
