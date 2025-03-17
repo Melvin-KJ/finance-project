@@ -1,5 +1,3 @@
-Here's a professional and detailed **GitHub README** for your **Moneysentry** project:
-
 ---
 
 # 💰 **Moneysentry – Personal Finance Management Application**  
